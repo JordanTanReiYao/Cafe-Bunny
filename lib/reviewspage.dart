@@ -42,20 +42,6 @@ class Reviews extends State<ReviewsPage> {
                                   reviewsList[index].review,
                                   reviewsList[index].username);
                             }));
-                    /*Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text('The id of the cafe is $id'),
-                          Text('The name of the cafe is $name'),
-                          Text('The reviews of the cafe is $reviewsList',
-                              textAlign: TextAlign.center),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: Text('Go back!'),
-                          )
-                        ]);*/
                   } else {
                     print("oh no 1");
                     return Center(child: CircularProgressIndicator());
