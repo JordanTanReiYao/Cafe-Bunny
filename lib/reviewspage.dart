@@ -3,7 +3,6 @@ import 'package:firebase_database/firebase_database.dart';
 //import 'package:google_maps_in_flutter/review.dart';
 import 'package:intl/intl.dart';
 import 'package:google_maps_in_flutter/review.dart';
-import 'package:google_maps_in_flutter/main.dart';
 
 class ReviewsPage extends StatefulWidget {
   final int id;
