@@ -18,6 +18,7 @@ class Reviews extends State<ReviewsPage> {
   var name;
   var retrieved;
   List<SingleReview> reviewsList = [];
+  final _textEditingController = TextEditingController();
   final databaseReference = FirebaseDatabase.instance.reference();
 
   @override
@@ -55,6 +56,7 @@ class Reviews extends State<ReviewsPage> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             // Add your onPressed code here!
+            AddReviewDialog(context);
           },
           child: const Icon(Icons.add),
           tooltip: 'Add Review',
@@ -138,6 +140,102 @@ class Reviews extends State<ReviewsPage> {
             ]))));
   }
 
+  AddReviewDialog(BuildContext context) async {
+    _textEditingController.clear();
+    await showDialog<String>(
+        context: context,
+        builder: (BuildContext context) {
+          var height = MediaQuery.of(context).size.height;
+          var width = MediaQuery.of(context).size.width;
+          return AlertDialog(
+            content: new SizedBox(
+                height: 400,
+                width: width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "Add Review",
+                            style: TextStyle(
+                                color: Colors.blueAccent, fontSize: 23),
+                          ),
+                          SizedBox(width: 6),
+                          Image.asset(
+                            'assets/review3.png',
+                            width: 30,
+                            height: 30,
+                          )
+                        ]),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    new Expanded(
+                        child: new TextField(
+                      controller: _textEditingController,
+                      maxLines: 10,
+                      autofocus: true,
+                      decoration: new InputDecoration(
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black, width: 2.0),
+                        ),
+                        hintText: 'Enter your review here',
+                        /*labelText: 'Add Review',
+                          labelStyle: TextStyle(
+                            fontSize: 24,
+                          ),*/
+                      ),
+                    )),
+                    SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          new FlatButton(
+                              child: const Text(
+                                'Add',
+                                style: TextStyle(
+                                    fontSize: 18, color: Colors.blueAccent),
+                              ),
+                              onPressed: () {
+                                setState(() => addReview(
+                                    _textEditingController.text.toString()));
+                                Navigator.pop(context);
+                              }),
+                          new FlatButton(
+                              child: const Text('Cancel',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.blueAccent)),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              })
+                        ])
+                  ],
+                )),
+            /*actions: <Widget>[
+              new FlatButton(
+                  child: const Text(
+                    'Add',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+              new FlatButton(
+                  child: const Text('Cancel', style: TextStyle(fontSize: 18)),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  })
+            ],*/
+          );
+        });
+  }
+
   getData() async {
     var refs;
     DataSnapshot data =
@@ -169,7 +267,7 @@ class Reviews extends State<ReviewsPage> {
     print("The reviews are $reviewsList");*/
     var now = new DateTime.now();
     var formatter = new DateFormat('dd-MM-yyyy');
-    String formattedDate = formatter.format(now);
+    var formattedDate = formatter.format(now);
     var keys = data.value.keys;
     var values = data.value;
     for (var i in keys) {
@@ -183,6 +281,20 @@ class Reviews extends State<ReviewsPage> {
     print('The reviews are $reviewsList');
     print('The DATE IS NOW ' + formattedDate); // 2016-01-25
     return retrieved;
+  }
+
+  addReview(String review_statement) {
+    if (review_statement.length > 0) {
+      var now = DateTime.now();
+      var formatter = DateFormat('yyyy-MM-dd');
+      var formatted = formatter.format(now);
+      var review =
+          new SingleReview(formatted, review_statement.toString(), 'Terry Tan');
+      databaseReference
+          .child('Cafes/' + name + '/reviews')
+          .push()
+          .set(review.toJson());
+    }
   }
 
   void initState() {
