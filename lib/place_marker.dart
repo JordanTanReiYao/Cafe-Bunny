@@ -8,13 +8,14 @@ import 'package:google_maps_in_flutter/detailspage.dart';
 class MyMarker extends Marker {
   final String name;
 
-  MyMarker(this.name, {MarkerId id, lat, lng, onTap})
+  MyMarker(this.name, {MarkerId id, double lat, double lng, icon, onTap})
       : super(
           markerId: id,
           position: LatLng(
             lat,
             lng,
           ),
+          icon: icon,
           infoWindow: InfoWindow(title: name, onTap: onTap),
         );
 

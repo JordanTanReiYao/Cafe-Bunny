@@ -48,7 +48,10 @@ class _MainMapState extends State<MainMap> {
       MyMarker marker = MyMarker(places[i]['name'],
           id: MarkerId(places[i]['id'].toString()),
           lat: places[i]['latitude'],
-          lng: places[i]['longitude'], onTap: () {
+          lng: places[i]['longitude'],
+          icon:
+              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+          onTap: () {
         print("HEY!!!");
         navigateToSubPage(context, 3);
       }); //null /*(navigateToSubPage(context, 2))*/);
