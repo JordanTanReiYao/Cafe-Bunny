@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:google_maps_in_flutter/place_marker.dart';
 import 'package:google_maps_in_flutter/detailspage.dart';
+import 'package:custom_info_window/custom_info_window.dart';
+import 'package:clippy_flutter/triangle.dart';
+import 'package:google_maps_in_flutter/widgets/sidemenu.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -18,27 +21,12 @@ class MainMap extends StatefulWidget {
 }
 
 class _MainMapState extends State<MainMap> {
+  CustomInfoWindowController _customInfoWindowController =
+      CustomInfoWindowController();
+
   final databaseReference = FirebaseDatabase.instance.reference();
   GoogleMapController mapController;
   Set<MyMarker> markersList = new Set();
-
-  List<Map<String, dynamic>> locations = [
-    {
-      "Location_Number": "-76.97892538.882767",
-      "Location_Name": "John Dean and Hannibal Hamlin Burial Sites",
-      "coordinates": [-76.978923660098019, 38.882767398397789]
-    },
-    {
-      "Location_Number": "-77.16515878125193238.938782583950172",
-      "Location_Name": "Camp Greene",
-      "coordinates": [-77.165158781251932, 38.938782583950172]
-    },
-    {
-      "Location_Number": "-77.04500938.919531",
-      "Location_Name": "John Little Farm Site",
-      "coordinates": [-77.045009, 38.919531]
-    },
-  ];
 
 //
 // add the markers to the markersList
@@ -52,8 +40,104 @@ class _MainMapState extends State<MainMap> {
           icon:
               BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
           onTap: () {
-        print("HEY!!!");
-        navigateToSubPage(context, 3);
+        var id = places[i]['id'];
+        String name = places[i]['name'];
+        _customInfoWindowController.addInfoWindow(
+          Container(
+              width: 300,
+              height: 1100,
+              child: Column(
+                children: [
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.lightBlueAccent),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 6, 9, 1),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          /*Expanded(
+                                child:*/
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              //width: MediaQuery.of(context).size.width,
+                              //margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                              children: <Widget>[
+                                Container(
+                                    margin: const EdgeInsets.all(0),
+                                    child: Image.asset(
+                                      'assets/cafe2.png',
+                                      width: 28,
+                                      height: 28,
+                                    )),
+                                Container(
+                                    child: Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          '$name',
+                                          textAlign: TextAlign.center,
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                              //color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize:
+                                                  18) /*Theme.of(context)
+                                  .textTheme
+                                  .headline6
+                                  .copyWith(
+                                    color: Colors.white,
+                                  )*/
+                                          ,
+                                        )))
+                              ])
+                          //),
+                          ,
+                          /*SizedBox(
+                              height: 2,
+                            ),*/
+                          Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              //margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                              children: <Widget>[
+                                ButtonTheme(
+                                    minWidth: 18,
+                                    height: 24,
+                                    child: RaisedButton(
+                                        color: Colors.lightBlueAccent,
+                                        child: Text(
+                                          'View Details',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                        onPressed: () {
+                                          navigateToSubPage(context, id);
+                                        }))
+                              ])
+                        ],
+                      ),
+                    ),
+                  ),
+                  //),
+                  Triangle.isosceles(
+                    edge: Edge.BOTTOM,
+                    child: Container(
+                      color: Colors.lightBlueAccent,
+                      width: 20.0,
+                      height: 10.0,
+                    ),
+                  ),
+                ],
+              )),
+          LatLng(places[i]['latitude'], places[i]['longitude']),
+        );
+
+        //print("HEY!!!");
+        //navigateToSubPage(context, places[i]['id']);
       }); //null /*(navigateToSubPage(context, 2))*/);
       markersList.add(marker);
       print('yessir');
@@ -110,6 +194,7 @@ class _MainMapState extends State<MainMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        drawer: NavDrawer(),
         appBar: AppBar(
           title: Text('Cafe Bunny'),
           backgroundColor: Colors.blueAccent,
@@ -119,7 +204,35 @@ class _MainMapState extends State<MainMap> {
                 future: _addMarkers(),
                 builder: (context, snapshot) {
                   if (snapshot != null) {
-                    return GoogleMap(
+                    return Stack(
+                      children: <Widget>[
+                        GoogleMap(
+                          onTap: (position) {
+                            _customInfoWindowController.hideInfoWindow();
+                          },
+                          onCameraMove: (position) {
+                            _customInfoWindowController.onCameraMove();
+                          },
+                          onMapCreated: (GoogleMapController controller) async {
+                            _customInfoWindowController.googleMapController =
+                                controller;
+                          },
+                          markers: markersList.toSet(),
+                          initialCameraPosition: CameraPosition(
+                            target:
+                                LatLng(1.3473582957696049, 103.67988893615487),
+                            zoom: 15,
+                          ),
+                        ),
+                        CustomInfoWindow(
+                            controller: _customInfoWindowController,
+                            height: 110, //95,
+                            width: 190,
+                            offset: 30 //50,
+                            ),
+                      ],
+                    );
+                    /*GoogleMap(
                         initialCameraPosition: CameraPosition(
                             target:
                                 LatLng(1.3473582957696049, 103.67988893615487),
@@ -128,6 +241,7 @@ class _MainMapState extends State<MainMap> {
                         myLocationEnabled: true,
                         mapType: MapType.normal,
                         markers: markersList.toSet());
+                  */
                   } else {
                     return CircularProgressIndicator();
                   }

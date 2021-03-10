@@ -10,14 +10,15 @@ class MyMarker extends Marker {
 
   MyMarker(this.name, {MarkerId id, double lat, double lng, icon, onTap})
       : super(
-          markerId: id,
-          position: LatLng(
-            lat,
-            lng,
-          ),
-          icon: icon,
-          infoWindow: InfoWindow(title: name, onTap: onTap),
-        );
+            markerId: id,
+            position: LatLng(
+              lat,
+              lng,
+            ),
+            icon: icon,
+            //infoWindow: InfoWindow()
+            //InfoWindow(title: name, onTap: onTap, snippet: name),
+            onTap: onTap);
 
   Future navigateToSubPage(context, Id) async {
     Navigator.push(
