@@ -71,6 +71,7 @@ class _MainMapState extends State<MainMap> {
                                 Container(
                                     margin: const EdgeInsets.all(0),
                                     child: Image.asset(
+                                      //'assets/cafefood.png',
                                       'assets/cafe2.png',
                                       width: 28,
                                       height: 28,
