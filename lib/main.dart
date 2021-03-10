@@ -46,7 +46,8 @@ class _MainMapState extends State<MainMap> {
           Container(
               width: 300,
               height: 1100,
-              child: Column(
+              child: Center(
+                  child: Column(
                 children: [
                   DecoratedBox(
                     decoration: BoxDecoration(
@@ -133,7 +134,7 @@ class _MainMapState extends State<MainMap> {
                     ),
                   ),
                 ],
-              )),
+              ))),
           LatLng(places[i]['latitude'], places[i]['longitude']),
         );
 
