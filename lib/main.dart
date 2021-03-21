@@ -33,6 +33,7 @@ class _MainMapState extends State<MainMap> {
   Future<Set> _addMarkers() async {
     var places = await getData();
     for (var i in places.keys) {
+      // ignore: omit_local_variable_types
       MyMarker marker = MyMarker(places[i]['name'],
           id: MarkerId(places[i]['id'].toString()),
           lat: places[i]['latitude'],
@@ -159,12 +160,14 @@ class _MainMapState extends State<MainMap> {
 
   Future navigateToSubPage(context, Id) async {
     print(2345);
+    // ignore: unawaited_futures
     Navigator.push(
         context, MaterialPageRoute(builder: (_) => new DetailsPage(id: Id)));
   }
 
   getData() async {
     var refs;
+    // ignore: omit_local_variable_types
     DataSnapshot data = await databaseReference.child('Locations').once();
     /*.then((DataSnapshot snapshot) {
       refs = snapshot.value;
