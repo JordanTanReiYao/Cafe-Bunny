@@ -1,3 +1,4 @@
+import 'package:Cafe_Bunny/home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 //import 'package:google_maps_in_flutter/review.dart';
@@ -34,7 +35,8 @@ class User extends State<UserProfile> {
               RaisedButton(
                   child: Text('Back to Home Page'),
                   onPressed: () {
-                    Navigator.of(context).popUntil((route) => route.isFirst);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                   })
             ])));
   }

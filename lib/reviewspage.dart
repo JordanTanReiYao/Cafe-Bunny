@@ -81,8 +81,8 @@ class Reviews extends State<ReviewsPage> {
                         Icons.home,
                       ),
                       onPressed: () {
-                        Navigator.of(context)
-                            .popUntil((route) => route.isFirst);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
                       },
                     )
                   ]),

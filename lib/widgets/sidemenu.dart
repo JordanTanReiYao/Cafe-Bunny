@@ -1,5 +1,9 @@
+import 'package:Cafe_Bunny/home.dart';
 import 'package:flutter/material.dart';
 import 'package:Cafe_Bunny/userprofile.dart';
+import 'package:Cafe_Bunny/main.dart';
+import 'package:Cafe_Bunny/email_login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class NavDrawer extends StatelessWidget {
   @override
@@ -20,11 +24,6 @@ class NavDrawer extends StatelessWidget {
                     image: AssetImage('assets/images/cover.jpg'))),
           ),
           ListTile(
-            leading: Icon(Icons.input),
-            title: Text('Welcome'),
-            onTap: () => {Navigator.of(context).pop()},
-          ),
-          ListTile(
             leading: Icon(Icons.verified_user_rounded),
             title: Text('Profile'),
             onTap: () => {navigateToSubPage(context)},
@@ -32,7 +31,7 @@ class NavDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () => {_signOut(context)},
           ),
         ],
       ),
@@ -43,5 +42,15 @@ class NavDrawer extends StatelessWidget {
     print(2345);
     Navigator.push(
         context, MaterialPageRoute(builder: (_) => new UserProfile()));
+  }
+
+  Future<void> _signOut(BuildContext context) async {
+    await FirebaseAuth.instance.signOut();
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => MyApp()),
+        (Route<dynamic> route) => false);
+    /*Navigator.push(
+        context, MaterialPageRoute(builder: (_) => new EmailLogIn()));*/
+    //runApp(new MaterialApp(home: new EmailLogIn()));
   }
 }

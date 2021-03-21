@@ -32,6 +32,10 @@ dependencies:
   intl: ^0.16.1
   custom_info_window: ^0.0.4
   clippy_flutter: ^1.1.1
+  firebase_auth: ^0.18.1+2
+  splashscreen : 1.2.0
+  flutter_signin_button: ^1.0.0
+
 
 
 
