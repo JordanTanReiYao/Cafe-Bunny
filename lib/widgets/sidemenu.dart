@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_maps_in_flutter/userprofile.dart';
+import 'package:Cafe_Bunny/userprofile.dart';
 
 class NavDrawer extends StatelessWidget {
   @override

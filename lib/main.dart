@@ -2,11 +2,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:google_maps_in_flutter/place_marker.dart';
-import 'package:google_maps_in_flutter/detailspage.dart';
+import 'package:Cafe_Bunny/place_marker.dart';
+import 'package:Cafe_Bunny/detailspage.dart';
 import 'package:custom_info_window/custom_info_window.dart';
 import 'package:clippy_flutter/triangle.dart';
-import 'package:google_maps_in_flutter/widgets/sidemenu.dart';
+import 'package:Cafe_Bunny/widgets/sidemenu.dart';
 
 void main() {
   runApp(MaterialApp(

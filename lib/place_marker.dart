@@ -1,6 +1,6 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_in_flutter/detailspage.dart';
+import 'package:Cafe_Bunny/detailspage.dart';
 
 //
 // extending the google map marker to add more information
