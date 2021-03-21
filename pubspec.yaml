@@ -32,7 +32,12 @@ dependencies:
   intl: ^0.16.1
   custom_info_window: ^0.0.4
   clippy_flutter: ^1.1.1
-
+  
+  firebase_auth: "^0.20.1"
+  google_sign_in: "^4.5.1"
+  font_awesome_flutter:
+  google_fonts:
+  flutter_easyloading: "^2.2.2"
 
 
 
