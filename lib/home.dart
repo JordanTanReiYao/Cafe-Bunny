@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:math';
 import 'package:flutter/material.dart';
@@ -21,16 +22,18 @@ class MainMap extends StatefulWidget {
 }
 
 class _MainMapState extends State<MainMap> {
+  var navdraw;
   CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
-
+  var currentUser;
+  String username;
   final databaseReference = FirebaseDatabase.instance.reference();
   GoogleMapController mapController;
   Set<MyMarker> markersList = new Set();
 
 //
 // add the markers to the markersList
-  Future<Set> _addMarkers() async {
+  Future<int> _addMarkers() async {
     var places = await getData();
     for (var i in places.keys) {
       // ignore: omit_local_variable_types
@@ -155,7 +158,29 @@ class _MainMapState extends State<MainMap> {
 
       markersList.add(marker);
     });*/
-    return markersList;
+    currentUser = await FirebaseAuth.instance.currentUser;
+    String userid = currentUser.uid;
+    DataSnapshot userData = await databaseReference.child('Users').once();
+    //    DataSnapshot userData = await databaseReference.child('Users').orderByChild('uid').equalTo(userid).once();
+
+    //print("here is $data");
+    print("user id is $userid");
+    //String userid = currentUser.uid;
+    print("The user name is " + userData.value[userid]['name']);
+    username = userData.value[userid]['name'];
+    var useremail = userData.value[userid]['email'];
+    navdraw = SideMenu(
+      userName: username,
+      email: useremail,
+    );
+    print('nav draw is $navdraw');
+    var end = null;
+    //print("The user age is" + currentUser.age);
+    if (navdraw != null && markersList.isNotEmpty) {
+      end = 1;
+    }
+    return end;
+    //return markersList;
   }
 
   Future navigateToSubPage(context, Id) async {
@@ -179,7 +204,71 @@ class _MainMapState extends State<MainMap> {
       var latitude = data.value[i]['latitude'];
       print('the latitude is $latitude');
     }
-    return data.value;
+    print('nav draw is $navdraw');
+
+    currentUser = await FirebaseAuth.instance.currentUser;
+    String userid = currentUser.uid;
+    DataSnapshot userData = await databaseReference.child('Users').once();
+    //    DataSnapshot userData = await databaseReference.child('Users').orderByChild('uid').equalTo(userid).once();
+
+    //print("here is $data");
+    print("user id is $userid");
+    //String userid = currentUser.uid;
+    print("The user name is " + userData.value[userid]['name']);
+    username = userData.value[userid]['name'];
+    navdraw = SideMenu(userName: username);
+    print('nav draw is $navdraw');
+    var end = null;
+    //print("The user age is" + currentUser.age);
+    if (navdraw != null && data.value != null) {
+      end = 1;
+    }
+    if (end == 1) {
+      return data.value;
+    }
+    //return data.value;
+    //return refs;
+  }
+
+  getAll() async {
+    var refs;
+    // ignore: omit_local_variable_types
+    DataSnapshot data = await databaseReference.child('Locations').once();
+    /*.then((DataSnapshot snapshot) {
+      refs = snapshot.value;
+      value = snapshot.value;
+      print(value);
+    });*/
+    print(23);
+    for (var i in data.value.keys) {
+      var latitude = data.value[i]['latitude'];
+      print('the latitude is $latitude');
+    }
+    print('nav draw is $navdraw');
+
+    currentUser = await FirebaseAuth.instance.currentUser;
+    String userid = currentUser.uid;
+    DataSnapshot userData = await databaseReference.child('Users').once();
+    //    DataSnapshot userData = await databaseReference.child('Users').orderByChild('uid').equalTo(userid).once();
+
+    print("here is $data");
+    print("user id is $userid");
+    //String userid = currentUser.uid;
+    print("The user name is " + userData.value[userid]['name']);
+    username = userData.value[userid]['name'];
+    navdraw = SideMenu(userName: username);
+    print('nav draw is $navdraw');
+    var end = null;
+    //print("The user age is" + currentUser.age);
+    if (navdraw != null && data.value != null) {
+      end = 1;
+    }
+    if (end == 1) {
+      return end;
+    } else {
+      return null;
+    }
+    //return data.value;
     //return refs;
   }
 
@@ -199,7 +288,17 @@ class _MainMapState extends State<MainMap> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: NavDrawer(),
+        drawer: FutureBuilder(
+            future: _addMarkers(),
+            builder: (context, snapshot) {
+              if (snapshot != null) {
+                return navdraw;
+              } else {
+                return Align(
+                    alignment: Alignment.topCenter,
+                    child: CircularProgressIndicator());
+              }
+            }),
         appBar: AppBar(
           title: Text('Cafe Bunny'),
           backgroundColor: Colors.blueAccent,
@@ -209,34 +308,39 @@ class _MainMapState extends State<MainMap> {
                 future: _addMarkers(),
                 builder: (context, snapshot) {
                   if (snapshot != null) {
-                    return Stack(
-                      children: <Widget>[
-                        GoogleMap(
-                          onTap: (position) {
-                            _customInfoWindowController.hideInfoWindow();
-                          },
-                          onCameraMove: (position) {
-                            _customInfoWindowController.onCameraMove();
-                          },
-                          onMapCreated: (GoogleMapController controller) async {
-                            _customInfoWindowController.googleMapController =
-                                controller;
-                          },
-                          markers: markersList.toSet(),
-                          initialCameraPosition: CameraPosition(
-                            target:
-                                LatLng(1.3473582957696049, 103.67988893615487),
-                            zoom: 15,
-                          ),
-                        ),
-                        CustomInfoWindow(
-                            controller: _customInfoWindowController,
-                            height: 110, //95,
-                            width: 190,
-                            offset: 30 //50,
+                    if (navdraw != null) {
+                      return Stack(
+                        children: <Widget>[
+                          GoogleMap(
+                            onTap: (position) {
+                              _customInfoWindowController.hideInfoWindow();
+                            },
+                            onCameraMove: (position) {
+                              _customInfoWindowController.onCameraMove();
+                            },
+                            onMapCreated:
+                                (GoogleMapController controller) async {
+                              _customInfoWindowController.googleMapController =
+                                  controller;
+                            },
+                            markers: markersList.toSet(),
+                            initialCameraPosition: CameraPosition(
+                              target: LatLng(
+                                  1.3473582957696049, 103.67988893615487),
+                              zoom: 15,
                             ),
-                      ],
-                    );
+                          ),
+                          CustomInfoWindow(
+                              controller: _customInfoWindowController,
+                              height: 110, //95,
+                              width: 190,
+                              offset: 30 //50,
+                              ),
+                        ],
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
                     /*GoogleMap(
                         initialCameraPosition: CameraPosition(
                             target:
@@ -247,10 +351,10 @@ class _MainMapState extends State<MainMap> {
                         mapType: MapType.normal,
                         markers: markersList.toSet());
                   */
+
                   } else {
-                    return CircularProgressIndicator();
+                    return Center(child: CircularProgressIndicator());
                   }
-                  ;
                 })));
   }
 
@@ -262,6 +366,7 @@ class _MainMapState extends State<MainMap> {
       value = snapshot.value;
       print(value);
     });*/
+    //SideMenu.initS
     _addMarkers();
     //getData();
   }

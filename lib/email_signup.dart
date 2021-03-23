@@ -138,7 +138,10 @@ class _EmailSignUpState extends State<EmailSignUp> {
         "email": emailController.text,
         "age": ageController.text,
         "name": nameController.text,
-        'test': "testing only"
+        'CafesHopped': 0,
+        'Title': 'Basic Bunny',
+        'ReviewsGiven': 0,
+        'test': "testing only",
       }).then((res) {
         isLoading = false;
         Navigator.pushReplacement(
