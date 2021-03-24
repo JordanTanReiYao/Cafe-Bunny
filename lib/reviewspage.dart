@@ -3,6 +3,7 @@ import 'package:firebase_database/firebase_database.dart';
 //import 'package:google_maps_in_flutter/review.dart';
 import 'package:intl/intl.dart';
 import 'package:Cafe_Bunny/review.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class ReviewsPage extends StatefulWidget {
   final int id;
@@ -14,11 +15,16 @@ class ReviewsPage extends StatefulWidget {
 }
 
 class Reviews extends State<ReviewsPage> {
+  DataSnapshot userData;
+
   int id;
+  String userName;
+  var currentUser;
   var name;
   var retrieved;
   List<SingleReview> reviewsList = [];
   final _textEditingController = TextEditingController();
+  final _textEditingController2 = TextEditingController();
   final databaseReference = FirebaseDatabase.instance.reference();
 
   @override
@@ -41,7 +47,8 @@ class Reviews extends State<ReviewsPage> {
                               return reviewsUI(
                                   reviewsList[index].date,
                                   reviewsList[index].review,
-                                  reviewsList[index].username);
+                                  reviewsList[index].username,
+                                  reviewsList[index].rating);
                             }));
                   } else {
                     print("oh no 1");
@@ -89,10 +96,10 @@ class Reviews extends State<ReviewsPage> {
             )));
   }
 
-  Widget reviewsUI(String date, String review, String username) {
+  Widget reviewsUI(String date, String review, String username, double rating) {
     return Container(
         alignment: Alignment.center,
-        height: 150,
+        //height: 150,
         child: Card(
             elevation: 10,
             margin: EdgeInsets.all(15),
@@ -119,18 +126,58 @@ class Reviews extends State<ReviewsPage> {
                         )
                       ])),
               SizedBox(
-                height: 10,
+                height: 18,
               ),
-              Align(
-                child: ListTile(
-                  title: Text(
-                    review,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                alignment: Alignment.center,
-              ),
+              Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Row(children: <Widget>[
+                      SizedBox(width: 17),
+                      Text(
+                        '$rating',
+                        style: TextStyle(
+                            fontSize: 27, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Image.asset(
+                        'assets/ratings star.png',
+                        width: 24,
+                        height: 24,
+                      )
+                    ]),
+                    SizedBox(width: 10),
+                    Container(
+                      width: 2,
+                      height: 50,
+                      color: Colors.black45,
+                    ),
+                    SizedBox(width: 10),
+
+                    /*Align(
+                  child:*/
+                    /* ListTile(
+                        title:*/
+                    Expanded(
+                        child: Padding(
+                            padding: EdgeInsets.fromLTRB(0, 0, 5, 10),
+                            child: Text(
+                              review,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 19),
+                              textAlign: TextAlign.center,
+                            ))),
+
+                    //),
+                    // alignment: Alignment.center,
+                    //)
+                  ]),
+              SizedBox(
+                height: 18,
+              )
+
               /*Center(
                   //mainAxisAlignment: MainAxisAlignment.center,
                   //crossAxisAlignment: CrossAxisAlignment.center,
@@ -142,13 +189,14 @@ class Reviews extends State<ReviewsPage> {
 
   AddReviewDialog(BuildContext context) async {
     _textEditingController.clear();
+    _textEditingController2.clear();
     await showDialog<String>(
         context: context,
         builder: (BuildContext context) {
           var height = MediaQuery.of(context).size.height;
           var width = MediaQuery.of(context).size.width;
           return AlertDialog(
-            content: new SizedBox(
+            content: SizedBox(
                 height: 400,
                 width: width,
                 child: Column(
@@ -173,30 +221,76 @@ class Reviews extends State<ReviewsPage> {
                     SizedBox(
                       height: 15,
                     ),
-                    new Expanded(
-                        child: new TextField(
-                      controller: _textEditingController,
-                      maxLines: 10,
-                      autofocus: true,
-                      decoration: new InputDecoration(
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.black, width: 2.0),
+                    Container(
+                        padding: EdgeInsets.fromLTRB(9, 5, 0, 2),
+                        height: 100,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                              color: Colors.black, // set border color
+                              width: 2.0), // set border width
+                          borderRadius: BorderRadius.all(Radius.circular(
+                              10.0)), // set rounded corner radius
                         ),
-                        hintText: 'Enter your review here',
-                        /*labelText: 'Add Review',
+                        child: Expanded(
+                            child: TextField(
+                          controller: _textEditingController,
+                          maxLines: 10,
+                          autofocus: true,
+                          decoration: InputDecoration(
+                            /*focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.black, width: 2.0),
+                            ),*/
+                            border: InputBorder.none,
+                            hintText: 'Enter your review here',
+                            /*labelText: 'Add Review',
                           labelStyle: TextStyle(
                             fontSize: 24,
                           ),*/
-                      ),
-                    )),
+                          ),
+                        ))),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(0, 9, 0, 0),
+                              child: Text('Enter rating')),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(0, 16, 0, 0),
+                              child: Container(
+                                  height: 50,
+                                  width: 70,
+                                  child: TextField(
+                                    controller: _textEditingController2,
+                                    maxLines: 1,
+                                    textAlign: TextAlign.center,
+                                    autofocus: true,
+                                    decoration: InputDecoration(
+                                      isCollapsed: true,
+                                      contentPadding: EdgeInsets.all(7),
+                                      hintText: 'e.g. 4',
+                                      /*labelText: 'Add Review',
+                          labelStyle: TextStyle(
+                            fontSize: 24,
+                          ),*/
+                                    ),
+                                  ))),
+                          Padding(
+                              padding: EdgeInsets.fromLTRB(5, 0, 0, 7),
+                              child: Image.asset('assets/ratings star.png',
+                                  width: 20, height: 20))
+                        ]),
                     SizedBox(
                       height: 15,
                     ),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
-                          new FlatButton(
+                          FlatButton(
                               child: const Text(
                                 'Add',
                                 style: TextStyle(
@@ -204,10 +298,12 @@ class Reviews extends State<ReviewsPage> {
                               ),
                               onPressed: () {
                                 setState(() => addReview(
-                                    _textEditingController.text.toString()));
+                                    _textEditingController.text.toString(),
+                                    double.parse(_textEditingController2.text
+                                        .toString())));
                                 Navigator.pop(context);
                               }),
-                          new FlatButton(
+                          FlatButton(
                               child: const Text('Cancel',
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.blueAccent)),
@@ -217,21 +313,6 @@ class Reviews extends State<ReviewsPage> {
                         ])
                   ],
                 )),
-            /*actions: <Widget>[
-              new FlatButton(
-                  child: const Text(
-                    'Add',
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }),
-              new FlatButton(
-                  child: const Text('Cancel', style: TextStyle(fontSize: 18)),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  })
-            ],*/
           );
         });
   }
@@ -240,31 +321,13 @@ class Reviews extends State<ReviewsPage> {
     var refs;
     DataSnapshot data =
         await databaseReference.child('Cafes/' + name + '/reviews').once();
-    /*.orderByChild('id')
-        .equalTo(id)
-        .once();*/
+
     print("YESSIR");
-    /*.orderByChild('id')
-        .equalTo(id)
-        .once();*/
-    /*.then((DataSnapshot snapshot) {
-      refs = snapshot.value;
-      value = snapshot.value;
-      print(value);
-    });*/
-    //var cafeid = 'cafe' + id.toString();
-    //print(cafeid);
-    //rint(data.value);
-    //refs = data.value;
-    //retrieved = data.value[cafeid]['reviews'];
+
     retrieved = data.value.values;
-    //print(retrieved.elementAt(0));
     print(retrieved);
     reviewsList = [];
-    /*for (var i in retrieved) {
-      reviewsList.add(i);
-    }
-    print("The reviews are $reviewsList");*/
+
     var now = new DateTime.now();
     var formatter = new DateFormat('dd-MM-yyyy');
     var formattedDate = formatter.format(now);
@@ -272,29 +335,41 @@ class Reviews extends State<ReviewsPage> {
     var values = data.value;
     for (var i in keys) {
       SingleReview review = new SingleReview(
-          values[i]['date'], values[i]['review'], values[i]['username']);
+          values[i]['date'],
+          values[i]['review'],
+          values[i]['username'],
+          values[i]['rating'].toDouble());
       reviewsList.add(review);
     }
     reviewsList.sort((a, b) {
       return DateTime.parse(b.date).compareTo(DateTime.parse(a.date));
     });
+    currentUser = await FirebaseAuth.instance.currentUser;
+    String userid = currentUser.uid;
+    userData = await databaseReference.child('Users').once();
+    userName = userData.value[userid]['name'];
     print('The reviews are $reviewsList');
     print('The DATE IS NOW ' + formattedDate); // 2016-01-25
     return retrieved;
   }
 
-  addReview(String review_statement) {
+  addReview(String review_statement, double rating) {
     if (review_statement.length > 0) {
       var now = DateTime.now();
       var formatter = DateFormat('yyyy-MM-dd');
       var formatted = formatter.format(now);
-      var review =
-          new SingleReview(formatted, review_statement.toString(), 'Terry Tan');
+      var review = SingleReview(
+          formatted, review_statement.toString(), this.userName, rating);
       databaseReference
           .child('Cafes/' + name + '/reviews')
           .push()
           .set(review.toJson());
     }
+    var reviewsgiven = userData.value[currentUser.uid]['ReviewsGiven'];
+    reviewsgiven += 1;
+    databaseReference
+        .child('Users/' + currentUser.uid + '/' + 'ReviewsGiven')
+        .set(reviewsgiven);
   }
 
   void initState() {

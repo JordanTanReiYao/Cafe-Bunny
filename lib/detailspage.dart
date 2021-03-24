@@ -1,6 +1,8 @@
+import 'package:Cafe_Bunny/home.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:Cafe_Bunny/reviewspage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 /*void main() {
   runApp(MaterialApp(
@@ -9,25 +11,31 @@ import 'package:Cafe_Bunny/reviewspage.dart';
 }*/
 
 class DetailsPage extends StatefulWidget {
+  Function callback;
+
   final int id;
   //const DetailsPage(this.id);
-  DetailsPage({Key key, @required this.id}) : super(key: key);
+  DetailsPage({Key key, @required this.id, this.callback}) : super(key: key);
   SubPage createState() => SubPage();
 }
 
 class SubPage extends State<DetailsPage> {
   //final int id;
+  DataSnapshot userData;
   int id;
   String name;
   //SubPage({Key key, @required this.id}) : super(key: key);
   final databaseReference = FirebaseDatabase.instance.reference();
   var picture;
+  var currentUser;
   //'https://icon-library.com/images/cafe-icon-png/cafe-icon-png-0.jpg';
   var value;
   var nameId;
+  var visitflag;
   var location;
   var opening_hours;
   var rating;
+  List visitslist;
   //var name;
   @override
   Widget build(BuildContext context) {
@@ -145,19 +153,50 @@ class SubPage extends State<DetailsPage> {
                                             5, 0, 10, 20),
                                         child: ButtonTheme(
                                             height: 42,
-                                            child: RaisedButton(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0)),
-                                                textColor: Colors.white,
-                                                color: Colors.blueAccent,
-                                                child: Text(
-                                                  'Hop to Cafe',
-                                                  style:
-                                                      TextStyle(fontSize: 23),
-                                                ),
-                                                onPressed: () {}))) //),
+                                            child: visitflag == '0'
+                                                ? RaisedButton(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0)),
+                                                    textColor: Colors.white,
+                                                    color: Colors.blueAccent,
+                                                    child: Text(
+                                                      'Hop to Cafe',
+                                                      style: TextStyle(
+                                                          fontSize: 23),
+                                                    ),
+                                                    onPressed: () => {
+                                                          setState(() => {
+                                                                visitflag = '1',
+                                                                HopToCafe()
+                                                              }),
+                                                          this.widget.callback(
+                                                              new MainMap()),
+                                                          setState(() => {
+                                                                visitflag = '1',
+                                                              })
+                                                        })
+                                                : RaisedButton(
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        8.0)),
+                                                    textColor: Colors.white,
+                                                    color: Colors.blueGrey,
+                                                    child: Text(
+                                                      'Cafe Hopped!!',
+                                                      style: TextStyle(
+                                                          fontSize: 23),
+                                                    ),
+                                                    onPressed: null)))
+//        setState(() {
+//          //change the currentPage in RootPage so it switches FeedPage away and gets a new class that I'll make
+//        });HopToCafe()}))) //),
                                     ,
                                     Container(
                                         margin: const EdgeInsets.fromLTRB(
@@ -225,6 +264,19 @@ class SubPage extends State<DetailsPage> {
         MaterialPageRoute(builder: (_) => new ReviewsPage(id: ID, name: Name)));
   }
 
+  void HopToCafe() {
+    visitslist[id - 1] = "1";
+    var newvisits = visitslist.join(",");
+    databaseReference
+        .child('Users/' + currentUser.uid + '/' + 'visits')
+        .set(newvisits);
+    var hopnumber = userData.value[currentUser.uid]['CafesHopped'];
+    hopnumber += 1;
+    databaseReference
+        .child('Users/' + currentUser.uid + '/' + 'CafesHopped')
+        .set(hopnumber);
+  }
+
   getData() async {
     var refs;
     DataSnapshot data = await databaseReference
@@ -237,6 +289,13 @@ class SubPage extends State<DetailsPage> {
       value = snapshot.value;
       print(value);
     });*/
+    currentUser = await FirebaseAuth.instance.currentUser;
+    String userid = currentUser.uid;
+    userData = await databaseReference.child('Users').once();
+    var visits = userData.value[userid]['visits'];
+    visitslist = visits.split(',');
+    visitflag = visitslist[id - 1];
+    print("THE VISITFLAG IS $visitflag");
     var cafeid = 'cafe' + id.toString();
     print(cafeid);
     print(data.value);
@@ -251,6 +310,7 @@ class SubPage extends State<DetailsPage> {
     nameId = data.value.keys.first;
     print(nameId);
     //id = value[cafeid]['id'];
+    id = value[cafeid]['id'];
     name = value[cafeid]['name'];
     picture = value[cafeid]['picture'];
     opening_hours = value[cafeid]['hours'];

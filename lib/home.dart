@@ -22,7 +22,10 @@ class MainMap extends StatefulWidget {
 }
 
 class _MainMapState extends State<MainMap> {
+  DetailsPage detailsPage;
   var navdraw;
+  Widget currentPage;
+
   CustomInfoWindowController _customInfoWindowController =
       CustomInfoWindowController();
   var currentUser;
@@ -195,7 +198,15 @@ class _MainMapState extends State<MainMap> {
     print(2345);
     // ignore: unawaited_futures
     Navigator.push(
-        context, MaterialPageRoute(builder: (_) => new DetailsPage(id: Id)));
+        context,
+        MaterialPageRoute(
+            builder: (_) => new DetailsPage(id: Id, callback: this.callback)));
+  }
+
+  void callback(Widget nextPage) {
+    setState(() {
+      this.currentPage = nextPage;
+    });
   }
 
   getData() async {
@@ -374,6 +385,9 @@ class _MainMapState extends State<MainMap> {
       value = snapshot.value;
       print(value);
     });*/
+    //detailsPage = DetailsPage(this.callback);
+
+    //currentPage = feedPage;
     //SideMenu.initS
     _addMarkers();
     //getData();
