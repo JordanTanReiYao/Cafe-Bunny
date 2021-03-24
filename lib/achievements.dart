@@ -60,7 +60,7 @@ class _Achievement2State extends State<Achievement2> {
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             alignment: Alignment.topCenter,
-                            image: AssetImage("images/background2.png"),
+                            image: AssetImage("assets/background2.png"),
                             fit: BoxFit.fitWidth))),
                 SafeArea(
                   child: ListView(children: [
