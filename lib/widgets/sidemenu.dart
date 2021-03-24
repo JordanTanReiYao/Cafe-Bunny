@@ -1,3 +1,4 @@
+import 'package:Cafe_Bunny/achievements.dart';
 import 'package:Cafe_Bunny/home.dart';
 import 'package:flutter/material.dart';
 import 'package:Cafe_Bunny/userprofile.dart';
@@ -58,7 +59,12 @@ class NavDrawer extends State<SideMenu> {
           ListTile(
             leading: Icon(Icons.verified_user_rounded),
             title: Text('Profile'),
-            onTap: () => {navigateToSubPage(context)},
+            onTap: () => {navigateToUserPage(context)},
+          ),
+          ListTile(
+            leading: Icon(Icons.star),
+            title: Text('Achievements'),
+            onTap: () => {navigateToAchievementPage(context)},
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
@@ -70,10 +76,16 @@ class NavDrawer extends State<SideMenu> {
     );
   }
 
-  Future navigateToSubPage(context) async {
+  Future navigateToUserPage(context) async {
     print(2345);
     Navigator.push(
         context, MaterialPageRoute(builder: (_) => new UserProfile()));
+  }
+
+  Future navigateToAchievementPage(context) async {
+    print(2345);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (_) => new Achievement2()));
   }
 
   Future<void> _signOut(BuildContext context) async {

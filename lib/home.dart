@@ -35,14 +35,22 @@ class _MainMapState extends State<MainMap> {
 // add the markers to the markersList
   Future<int> _addMarkers() async {
     var places = await getData();
+    currentUser = await FirebaseAuth.instance.currentUser;
+    String userid = currentUser.uid;
+    DataSnapshot userData = await databaseReference.child('Users').once();
+    var visits = userData.value[userid]['visits'];
+    List visitslist = visits.split(',');
+    print("VISITS IS $visitslist");
+    print(visitslist.runtimeType);
     for (var i in places.keys) {
       // ignore: omit_local_variable_types
       MyMarker marker = MyMarker(places[i]['name'],
           id: MarkerId(places[i]['id'].toString()),
           lat: places[i]['latitude'],
           lng: places[i]['longitude'],
-          icon:
-              BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen),
+          icon: visitslist[places[i]['id'] - 1] == '0'
+              ? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueGreen)
+              : BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           onTap: () {
         var id = places[i]['id'];
         String name = places[i]['name'];
@@ -159,8 +167,8 @@ class _MainMapState extends State<MainMap> {
       markersList.add(marker);
     });*/
     currentUser = await FirebaseAuth.instance.currentUser;
-    String userid = currentUser.uid;
-    DataSnapshot userData = await databaseReference.child('Users').once();
+    //String userid = currentUser.uid;
+    //DataSnapshot userData = await databaseReference.child('Users').once();
     //    DataSnapshot userData = await databaseReference.child('Users').orderByChild('uid').equalTo(userid).once();
 
     //print("here is $data");
