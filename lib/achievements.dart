@@ -14,6 +14,7 @@ class _Achievement2State extends State<Achievement2> {
   var currentUser;
   var userName;
   var playerlvl;
+  var couponlist;
   var userTitle;
   var userData;
   var cafeHops;
@@ -42,7 +43,7 @@ class _Achievement2State extends State<Achievement2> {
           future: getData(),
           builder: (context, snapshot) {
             if (snapshot != null) {
-              if (cafeHops != null && playerlvl != null) {
+              if (cafeHops != null && playerlvl != null && couponlist != null) {
                 return Stack(children: <Widget>[
                   Container(
                       decoration: BoxDecoration(
@@ -327,7 +328,9 @@ class _Achievement2State extends State<Achievement2> {
                                                                           20,
                                                                     ),
                                                                   )
-                                                                : !gb.babybunny
+                                                                : couponlist[
+                                                                            0] ==
+                                                                        '0'
                                                                     ? FlatButton(
                                                                         onPressed:
                                                                             () {
@@ -399,7 +402,9 @@ class _Achievement2State extends State<Achievement2> {
                                                                           20,
                                                                     ),
                                                                   )
-                                                                : !gb.coupon1
+                                                                : couponlist[
+                                                                            1] !=
+                                                                        '0'
                                                                     ? FlatButton(
                                                                         onPressed:
                                                                             () {
@@ -878,14 +883,14 @@ class _Achievement2State extends State<Achievement2> {
     userName = userData.value[userid]['name'];
     userTitle = userData.value[userid]['Title'];
     playerlvl = (cafeHops / 3).floor() == 0 ? 1 : 1 + (cafeHops / 3).floor();
-
+    couponlist = userData.value[userid]['coupons'];
     //gb.hopCount = cafeHops;
     //gb.playerLevel = (cafeHops / 2).ceil();
     //gb.hopCount = 0;
     //print("HELLO THERE");
     //print("PLAYER LEVEL IS ${gb.hopCount}");
     //if (gb.hopCount > 0 && gb.playerLevel > 0) {
-    if (cafeHops > 0 && playerlvl > 0) {
+    if (cafeHops != null && playerlvl != null && couponlist != null) {
       return cafeHops;
     }
     //return cafeHops;
