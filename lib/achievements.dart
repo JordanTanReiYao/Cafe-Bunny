@@ -861,6 +861,14 @@ class _Achievement2State extends State<Achievement2> {
         )));
   }
 
+  void claimCoupon(int i) {
+    couponlist[i] = 1;
+    var couponString = couponlist.join(',');
+    databaseReference
+        .child('Users/' + currentUser.uid + '/' + 'coupons')
+        .set(couponString);
+  }
+
   bool checkLvl(var level) {
     if (playerlvl >= level)
       return true;
