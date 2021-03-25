@@ -13,24 +13,11 @@ class Achievement2 extends StatefulWidget {
 class _Achievement2State extends State<Achievement2> {
   var currentUser;
   var userName;
+  var playerlvl;
   var userTitle;
   var userData;
-  int cafeHops;
+  var cafeHops;
   final databaseReference = FirebaseDatabase.instance.reference();
-
-  bool checkLvl(int level) {
-    if (gb.playerLevel >= level)
-      return true;
-    else
-      return false;
-  }
-
-  bool checkHop(int hop) {
-    if (gb.hopCount >= hop)
-      return true;
-    else
-      return false;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -203,7 +190,7 @@ class _Achievement2State extends State<Achievement2> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      Text("${gb.playerLevel}",
+                                                      Text("$playerlvl",
                                                           style: TextStyle(
                                                               color: Color
                                                                   .fromRGBO(
@@ -228,7 +215,7 @@ class _Achievement2State extends State<Achievement2> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      Text("${gb.hopCount}",
+                                                      Text("$cafeHops",
                                                           style: TextStyle(
                                                               color: Color
                                                                   .fromRGBO(
@@ -385,12 +372,12 @@ class _Achievement2State extends State<Achievement2> {
                                                           title:
                                                               Text('Coupon 1'),
                                                           subtitle: Text(
-                                                              'Reach Player Level 5'),
+                                                              'Reach Player Level 2'),
                                                           onTap: () {
                                                             print('Coupon 1');
                                                           },
-                                                          enabled: checkLvl(5),
-                                                          trailing: !checkLvl(5)
+                                                          enabled: checkLvl(2),
+                                                          trailing: !checkLvl(2)
                                                               ? Text(
                                                                   '${gb.playerLevel}/5',
                                                                   style:
@@ -854,6 +841,20 @@ class _Achievement2State extends State<Achievement2> {
         )));
   }
 
+  bool checkLvl(var level) {
+    if (playerlvl >= level)
+      return true;
+    else
+      return false;
+  }
+
+  bool checkHop(var hop) {
+    if (cafeHops >= hop)
+      return true;
+    else
+      return false;
+  }
+
   getData() async {
     currentUser = await FirebaseAuth.instance.currentUser;
     String userid = currentUser.uid;
@@ -861,8 +862,18 @@ class _Achievement2State extends State<Achievement2> {
     cafeHops = userData.value[userid]['CafesHopped'];
     userName = userData.value[userid]['name'];
     userTitle = userData.value[userid]['Title'];
+    playerlvl = (cafeHops / 2).ceil();
     //gb.hopCount = cafeHops;
+    //gb.playerLevel = (cafeHops / 2).ceil();
     //gb.hopCount = 0;
-    return cafeHops;
+    //print("HELLO THERE");
+    //print("PLAYER LEVEL IS ${gb.hopCount}");
+    //if (gb.hopCount > 0 && gb.playerLevel > 0) {
+    if (cafeHops > 0 && playerlvl > 0) {
+      return cafeHops;
+    }
+    //return cafeHops;
+    //}
+    //return cafeHops;
   }
 }

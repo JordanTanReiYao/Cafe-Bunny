@@ -5,7 +5,7 @@ import 'package:Cafe_Bunny/couponClass.dart';
 String playerName = 'Ask Ketchum';
 String playerTitle = 'Cultured Bunny';
 int playerLevel = 1;
-int hopCount = 0;
+double hopCount = 0;
 int expFlag = 0;
 
 bool babybunny = false;

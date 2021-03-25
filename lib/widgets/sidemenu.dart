@@ -54,7 +54,7 @@ class NavDrawer extends State<SideMenu> {
                 color: Colors.blueAccent,
                 image: DecorationImage(
                     fit: BoxFit.fill,
-                    image: AssetImage('assets/images/cover.jpg'))),
+                    image: AssetImage('assets/background3.png'))),
           ),
           ListTile(
             leading: Icon(Icons.verified_user_rounded),
