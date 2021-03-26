@@ -67,7 +67,7 @@ class User extends State<UserProfile> {
                           Padding(
                               //padding: EdgeInsets.fromLTRB(10, 74, 10, 0),
                               padding: const EdgeInsets.only(
-                                  top: 40.0, left: 16, right: 16, bottom: 70),
+                                  top: 40.0, left: 16, right: 16, bottom: 78),
                               child: Column(children: <Widget>[
                                 Container(
                                     decoration: BoxDecoration(
@@ -216,7 +216,7 @@ class User extends State<UserProfile> {
                                         ]))
                               ])),
                           Positioned(
-                              bottom: 10,
+                              bottom: 18,
                               child: RaisedButton(
                                   child: Text('Back to Home Page'),
                                   onPressed: () {
