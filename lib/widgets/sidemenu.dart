@@ -24,40 +24,49 @@ class NavDrawer extends State<SideMenu> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: <Widget>[
-          DrawerHeader(
-            //padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
-            child: Column(
-                //mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    '$userName',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 28,
-                    ),
-                    //textAlign: TextAlign.center,
-                  ),
-                  CircleAvatar(
-                    backgroundImage: AssetImage("assets/sampleprofilepic.png"),
-                    radius: 45.0,
-                    // maxRadius: 200.0,
-                  ),
-                  Text(
-                    '$email',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                    ),
-                    //textAlign: TextAlign.center,
-                  )
-                ]),
-            decoration: BoxDecoration(
-                color: Colors.blueAccent,
-                image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: AssetImage('assets/background3.png'))),
-          ),
+          Container(
+              height: 0.33 * MediaQuery.of(context).size.height,
+              child: DrawerHeader(
+                //padding: EdgeInsets.fromLTRB(20, 0, 0, 0),
+                child: Column(
+                    //mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        '$userName',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                        ),
+                        //textAlign: TextAlign.center,
+                      ),
+                      SizedBox(
+                        height: 9,
+                      ),
+                      CircleAvatar(
+                        backgroundImage:
+                            AssetImage("assets/sampleprofilepic.png"),
+                        radius: 45.0,
+                        // maxRadius: 200.0,
+                      ),
+                      SizedBox(
+                        height: 13,
+                      ),
+                      Text(
+                        '$email',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                        ),
+                        //textAlign: TextAlign.center,
+                      )
+                    ]),
+                decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                    image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: AssetImage('assets/background3.png'))),
+              )),
           ListTile(
             leading: Icon(Icons.verified_user_rounded),
             title: Text('Profile'),

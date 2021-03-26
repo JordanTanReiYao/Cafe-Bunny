@@ -138,10 +138,13 @@ class _EmailSignUpState extends State<EmailSignUp> {
         "email": emailController.text,
         "age": ageController.text,
         "name": nameController.text,
+        'achievements': 0,
+        'coupons': '0,0,0,0,0,0,0',
+        'level': 1,
+        'visits': '0,0,0,0,0,0',
         'CafesHopped': 0,
-        'Title': 'Basic Bunny',
+        'Title': 'Baby Bunny',
         'ReviewsGiven': 0,
-        'test': "testing only",
       }).then((res) {
         isLoading = false;
         Navigator.pushReplacement(

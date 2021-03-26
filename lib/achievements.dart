@@ -88,7 +88,7 @@ class _Achievement2State extends State<Achievement2> {
                                           Expanded(
                                             child: Column(
                                               children: [
-                                                SizedBox(height: 10.0),
+                                                //SizedBox(height: 10.0),
                                                 Align(
                                                   child: Text('$userName',
                                                       style: TextStyle(
@@ -254,12 +254,12 @@ class _Achievement2State extends State<Achievement2> {
                                                                   0xff232c51),
                                                             ),
                                                             title: Text(
-                                                                '"Baby Bunny"'),
+                                                                '"Basic Bunny"'),
                                                             subtitle: Text(
                                                                 'Hop 2 times'),
                                                             onTap: () {
                                                               print(
-                                                                  'Baby Bunny');
+                                                                  'Basic Bunny');
                                                             },
                                                             enabled:
                                                                 checkHop(2),
@@ -426,19 +426,18 @@ class _Achievement2State extends State<Achievement2> {
                                                                           20,
                                                                     ),
                                                                   )
-                                                                : !gb.coupon2
+                                                                : couponlist[
+                                                                            2] ==
+                                                                        '0'
                                                                     ? FlatButton(
                                                                         onPressed:
                                                                             () {
                                                                           setState(
                                                                               () {
                                                                             // Critical code
-                                                                            gb.coupon2 =
-                                                                                true;
-                                                                            print('Coupon 2 claimed');
-                                                                            gb.inventory.add(Coupon(
-                                                                                title: 'Coupon 2',
-                                                                                code: '2222'));
+                                                                            couponlist[2] =
+                                                                                '1';
+                                                                            claimCoupon(2);
                                                                           });
                                                                         },
                                                                         color: Color(
@@ -502,16 +501,18 @@ class _Achievement2State extends State<Achievement2> {
                                                                           20,
                                                                     ),
                                                                   )
-                                                                : !gb.buffetbunny
+                                                                : couponlist[
+                                                                            3] ==
+                                                                        '0'
                                                                     ? FlatButton(
                                                                         onPressed:
                                                                             () {
                                                                           setState(
                                                                               () {
                                                                             // Critical code
-                                                                            gb.buffetbunny =
-                                                                                true;
-                                                                            print('"Buffet bunny" claimed');
+                                                                            couponlist[3] =
+                                                                                '1';
+                                                                            claimCoupon(3);
                                                                           });
                                                                         },
                                                                         color: Color(
@@ -574,19 +575,18 @@ class _Achievement2State extends State<Achievement2> {
                                                                           20,
                                                                     ),
                                                                   )
-                                                                : !gb.coupon3
+                                                                : couponlist[
+                                                                            4] ==
+                                                                        '0'
                                                                     ? FlatButton(
                                                                         onPressed:
                                                                             () {
                                                                           setState(
                                                                               () {
                                                                             // Critical code
-                                                                            gb.coupon3 =
-                                                                                true;
-                                                                            print('Coupon 3 claimed');
-                                                                            gb.inventory.add(Coupon(
-                                                                                title: 'Coupon 3',
-                                                                                code: '3333'));
+                                                                            couponlist[4] =
+                                                                                '1';
+                                                                            claimCoupon(4);
                                                                           });
                                                                         },
                                                                         color: Color(
@@ -649,19 +649,18 @@ class _Achievement2State extends State<Achievement2> {
                                                                           20,
                                                                     ),
                                                                   )
-                                                                : !gb.coupon4
+                                                                : couponlist[
+                                                                            5] ==
+                                                                        '0'
                                                                     ? FlatButton(
                                                                         onPressed:
                                                                             () {
                                                                           setState(
                                                                               () {
                                                                             // Critical code
-                                                                            gb.coupon4 =
-                                                                                true;
-                                                                            print('Coupon 4 claimed');
-                                                                            gb.inventory.add(Coupon(
-                                                                                title: 'Coupon 4',
-                                                                                code: '4444'));
+                                                                            couponlist[5] =
+                                                                                '1';
+                                                                            claimCoupon(5);
                                                                           });
                                                                         },
                                                                         color: Color(
@@ -725,16 +724,18 @@ class _Achievement2State extends State<Achievement2> {
                                                                           20,
                                                                     ),
                                                                   )
-                                                                : !gb.superbunny
+                                                                : couponlist[
+                                                                            6] ==
+                                                                        '1'
                                                                     ? FlatButton(
                                                                         onPressed:
                                                                             () {
                                                                           setState(
                                                                               () {
                                                                             // Critical code
-                                                                            gb.superbunny =
-                                                                                true;
-                                                                            print('"Super bunny" claimed');
+                                                                            couponlist[6] =
+                                                                                '1';
+                                                                            claimCoupon(6);
                                                                           });
                                                                         },
                                                                         color: Color(
@@ -818,10 +819,62 @@ class _Achievement2State extends State<Achievement2> {
     databaseReference
         .child('Users/' + currentUser.uid + '/' + 'achievements')
         .set(achievements);
+    if (cafeHops >= 2 && cafeHops < 10) {
+      setState(() {
+        userTitle = 'Basic Bunny';
+      });
+      databaseReference
+          .child('Users/' + currentUser.uid + '/' + 'Title')
+          .set(userTitle);
+    } else if (cafeHops >= 10 && cafeHops < 20) {
+      setState(() {
+        userTitle = 'Buffet Bunny';
+      });
+      databaseReference
+          .child('Users/' + currentUser.uid + '/' + 'Title')
+          .set(userTitle);
+    } else if (cafeHops >= 20) {
+      setState(() {
+        userTitle = 'Super Bunny';
+      });
+      databaseReference
+          .child('Users/' + currentUser.uid + '/' + 'Title')
+          .set(userTitle);
+    }
+    playerlvl = 1 + (cafeHops / 3).floor();
+    if (playerlvl == 2) {
+      setState(() {
+        playerlvl = 2;
+      });
+      databaseReference
+          .child('Users/' + currentUser.uid + '/' + 'level')
+          .set(playerlvl);
+    } else if (playerlvl == 10) {
+      setState(() {
+        playerlvl = 10;
+      });
+      databaseReference
+          .child('Users/' + currentUser.uid + '/' + 'level')
+          .set(playerlvl);
+    } else if (playerlvl == 15) {
+      setState(() {
+        playerlvl = 15;
+      });
+      databaseReference
+          .child('Users/' + currentUser.uid + '/' + 'level')
+          .set(playerlvl);
+    } else if (playerlvl == 20) {
+      setState(() {
+        playerlvl = 20;
+      });
+      databaseReference
+          .child('Users/' + currentUser.uid + '/' + 'level')
+          .set(playerlvl);
+    }
   }
 
   bool checkLvl(var level) {
-    if (playerlvl >= level)
+    if ((1 + (cafeHops / 3).floor()) >= level)
       return true;
     else
       return false;
@@ -842,7 +895,7 @@ class _Achievement2State extends State<Achievement2> {
     userName = userData.value[userid]['name'];
     userTitle = userData.value[userid]['Title'];
     achievements = userData.value[userid]['achievements'];
-    playerlvl = (cafeHops / 3).floor() == 0 ? 1 : 1 + (cafeHops / 3).floor();
+    playerlvl = userData.value[userid]['level'];
     couponlist = userData.value[userid]['coupons'].split(',');
     //gb.hopCount = cafeHops;
     //gb.playerLevel = (cafeHops / 2).ceil();
