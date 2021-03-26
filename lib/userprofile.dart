@@ -40,10 +40,11 @@ class User extends State<UserProfile> {
                 future: getData(),
                 builder: (context, snapshot) {
                   if (snapshot != null) {
-                    return Stack(alignment: Alignment.topCenter,
-                        // ignore: deprecated_member_use
-                        //overflow: Overflow.visible,
-                        children: <Widget>[
+                    return SingleChildScrollView(
+                        child: Stack(alignment: Alignment.topCenter,
+                            // ignore: deprecated_member_use
+                            //overflow: Overflow.visible,
+                            children: <Widget>[
                           Container(
                               height: 250.0,
                               decoration: BoxDecoration(
@@ -61,179 +62,168 @@ class User extends State<UserProfile> {
 
                             child:*/
 
-                          SingleChildScrollView(
-                              child: Padding(
-                                  //padding: EdgeInsets.fromLTRB(10, 74, 10, 0),
-                                  padding: const EdgeInsets.only(
-                                      top: 40.0, left: 16, right: 16),
-                                  child: Column(children: <Widget>[
-                                    Container(
-                                        decoration: BoxDecoration(
-                                          boxShadow: [
-                                            BoxShadow(color: Colors.black)
-                                          ],
-                                          //border: Border.all(color: Colors.black),
-                                          borderRadius:
-                                              BorderRadius.circular(16.0),
-                                          color: Colors.white,
-                                        ),
-                                        width: 0.8 *
-                                            MediaQuery.of(context).size.width,
-                                        //height: MediaQuery.of(context).size.height,
+                          /*SingleChildScrollView(
+                              child: */
+                          Padding(
+                              //padding: EdgeInsets.fromLTRB(10, 74, 10, 0),
+                              padding: const EdgeInsets.only(
+                                  top: 40.0, left: 16, right: 16, bottom: 70),
+                              child: Column(children: <Widget>[
+                                Container(
+                                    decoration: BoxDecoration(
+                                      boxShadow: [
+                                        BoxShadow(color: Colors.black)
+                                      ],
+                                      //border: Border.all(color: Colors.black),
+                                      borderRadius: BorderRadius.circular(16.0),
+                                      color: Colors.white,
+                                    ),
+                                    width:
+                                        0.8 * MediaQuery.of(context).size.width,
+                                    //height: MediaQuery.of(context).size.height,
 
-                                        child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            children: <Widget>[
-                                              Padding(
-                                                  padding:
-                                                      const EdgeInsets.fromLTRB(
-                                                          0, 0, 0, 10),
-                                                  child: Text("$name",
-                                                      style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontSize: 28,
-                                                      ))),
-                                              Container(
-                                                width: double.infinity,
-                                                //height: 200,
-                                                child: Container(
-                                                  alignment:
-                                                      Alignment(0.0, 2.5),
-                                                  child: CircleAvatar(
-                                                    backgroundImage: AssetImage(
-                                                        'assets/sampleprofilepic.png'),
-                                                    radius: 60.0,
-                                                  ),
-                                                ),
+                                    child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      0, 10, 0, 10),
+                                              child: Text("$name",
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 28,
+                                                  ))),
+                                          Container(
+                                            width: double.infinity,
+                                            //height: 200,
+                                            child: Container(
+                                              alignment: Alignment(0.0, 2.5),
+                                              child: CircleAvatar(
+                                                backgroundImage: AssetImage(
+                                                    'assets/sampleprofilepic.png'),
+                                                radius: 60.0,
                                               ),
-                                              SizedBox(height: 15),
-                                              Card(
-                                                  elevation: 10,
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      20, 10, 20, 10),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(0, 0, 0, 10),
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: <Widget>[
-                                                        const ListTile(
-                                                          title: Text(
-                                                            'Title',
-                                                            style: TextStyle(
-                                                                fontSize: 25,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                          ),
-                                                          /*subtitle: Text(
-                              'Music by Julie Gable. Lyrics by Sidney Stein.'),*/
-                                                        ),
-                                                        Text(
-                                                          '$title',
-                                                          style: TextStyle(
-                                                              fontSize: 25),
-                                                        )
-                                                        /*TextButton(
-                              child: const Text('BUY TICKETS'),
-                              onPressed: () {/* ... */},
-                            ),
-                            const SizedBox(width: 8),
-                            TextButton(
-                              child: const Text('LISTEN'),
-                              onPressed: () {/* ... */},
-                            ),
-                            const SizedBox(width: 8),*/
-
-                                                        ,
-                                                      ],
+                                            ),
+                                          ),
+                                          SizedBox(height: 15),
+                                          Card(
+                                              elevation: 10,
+                                              margin: EdgeInsets.fromLTRB(
+                                                  20, 10, 20, 10),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        0, 0, 0, 10),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    const ListTile(
+                                                      title: Text(
+                                                        'Title',
+                                                        style: TextStyle(
+                                                            fontSize: 25,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
                                                     ),
-                                                  )),
-                                              Card(
-                                                  elevation: 10,
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      20, 10, 20, 10),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(0, 0, 0, 10),
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: <Widget>[
-                                                        const ListTile(
-                                                          title: Text(
-                                                            'Cafes Hopped',
-                                                            style: TextStyle(
-                                                                fontSize: 25,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          '$cafeshopped',
-                                                          style: TextStyle(
-                                                              fontSize: 25),
-                                                        ),
-                                                      ],
+                                                    Text(
+                                                      '$title',
+                                                      style: TextStyle(
+                                                          fontSize: 25),
                                                     ),
-                                                  )),
-                                              Card(
-                                                  elevation: 10,
-                                                  margin: EdgeInsets.fromLTRB(
-                                                      20, 10, 20, 10),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                        .fromLTRB(0, 0, 0, 10),
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: <Widget>[
-                                                        const ListTile(
-                                                          title: Text(
-                                                            'Reviews Given',
-                                                            style: TextStyle(
-                                                                fontSize: 25,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          '$reviewsgiven',
-                                                          style: TextStyle(
-                                                              fontSize: 25),
-                                                        ),
-                                                      ],
+                                                  ],
+                                                ),
+                                              )),
+                                          Card(
+                                              elevation: 10,
+                                              margin: EdgeInsets.fromLTRB(
+                                                  20, 10, 20, 10),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        0, 0, 0, 10),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    const ListTile(
+                                                      title: Text(
+                                                        'Cafes Hopped',
+                                                        style: TextStyle(
+                                                            fontSize: 25,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
                                                     ),
-                                                  )),
-                                              RaisedButton(
-                                                  child:
-                                                      Text('Back to Home Page'),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                    Navigator.pop(context);
-                                                  })
-                                            ]))
-                                  ]))),
-                        ]);
+                                                    Text(
+                                                      '$cafeshopped',
+                                                      style: TextStyle(
+                                                          fontSize: 25),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                          Card(
+                                              elevation: 10,
+                                              margin: EdgeInsets.fromLTRB(
+                                                  20, 10, 20, 10),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.fromLTRB(
+                                                        0, 0, 0, 10),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: <Widget>[
+                                                    const ListTile(
+                                                      title: Text(
+                                                        'Reviews Given',
+                                                        style: TextStyle(
+                                                            fontSize: 25,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      '$reviewsgiven',
+                                                      style: TextStyle(
+                                                          fontSize: 25),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                          SizedBox(
+                                            height: 18,
+                                          )
+                                        ]))
+                              ])),
+                          Positioned(
+                              bottom: 10,
+                              child: RaisedButton(
+                                  child: Text('Back to Home Page'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  }))
+                        ]));
                   } else {
                     return CircularProgressIndicator();
                   }
