@@ -1,6 +1,5 @@
 local.properties
 pubspec.yaml
-build.gradle
 google-services.json
 
 # Miscellaneous
