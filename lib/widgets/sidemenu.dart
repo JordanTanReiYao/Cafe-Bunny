@@ -38,8 +38,10 @@ class NavDrawer extends State<SideMenu> {
                     ),
                     //textAlign: TextAlign.center,
                   ),
-                  SizedBox(
-                    height: 70,
+                  CircleAvatar(
+                    backgroundImage: AssetImage("assets/sampleprofilepic.png"),
+                    radius: 45.0,
+                    // maxRadius: 200.0,
                   ),
                   Text(
                     '$email',

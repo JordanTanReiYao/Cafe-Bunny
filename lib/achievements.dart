@@ -13,6 +13,7 @@ class Achievement2 extends StatefulWidget {
 class _Achievement2State extends State<Achievement2> {
   var currentUser;
   var userName;
+  var achievements;
   var playerlvl;
   var couponlist;
   var userTitle;
@@ -87,61 +88,7 @@ class _Achievement2State extends State<Achievement2> {
                                           Expanded(
                                             child: Column(
                                               children: [
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  children: [
-                                                    FlatButton(
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          gb.hopCount += 1;
-                                                          if (gb.expFlag == 0)
-                                                            gb.expFlag += 1;
-                                                          else {
-                                                            gb.expFlag = 0;
-                                                            gb.playerLevel += 1;
-                                                          }
-                                                        });
-                                                      },
-                                                      color: Color.fromRGBO(
-                                                          17, 205, 239, 1.0),
-                                                      child: Text(
-                                                        '+ HOP',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 14,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      width: 30.0,
-                                                    ),
-                                                    FlatButton(
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          gb.hopCount = 0;
-                                                          gb.playerLevel = 1;
-                                                          gb.hopCount = 0;
-                                                          gb.expFlag = 0;
-                                                        });
-                                                      },
-                                                      color: Color.fromRGBO(
-                                                          23, 43, 77, 1.0),
-                                                      child: Text(
-                                                        '! HOP',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 14,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(height: 30.0),
+                                                SizedBox(height: 10.0),
                                                 Align(
                                                   child: Text('$userName',
                                                       style: TextStyle(
@@ -167,7 +114,7 @@ class _Achievement2State extends State<Achievement2> {
                                                   children: [
                                                     Column(
                                                       children: [
-                                                        Text("${gb.expFlag}/2",
+                                                        Text('$achievements',
                                                             style: TextStyle(
                                                                 color: Color
                                                                     .fromRGBO(
@@ -179,7 +126,7 @@ class _Achievement2State extends State<Achievement2> {
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold)),
-                                                        Text("Experience",
+                                                        Text('Achievements',
                                                             style: TextStyle(
                                                                 color: Color
                                                                     .fromRGBO(
@@ -337,8 +284,11 @@ class _Achievement2State extends State<Achievement2> {
                                                                           setState(
                                                                               () {
                                                                             // Critical code
-                                                                            gb.babybunny =
-                                                                                true;
+                                                                            /*gb.babybunny =
+                                                                                true;*/
+                                                                            couponlist[0] =
+                                                                                '1';
+                                                                            claimCoupon(0);
                                                                             print('"Baby Bunny" claimed');
                                                                           });
                                                                         },
@@ -403,7 +353,7 @@ class _Achievement2State extends State<Achievement2> {
                                                                     ),
                                                                   )
                                                                 : couponlist[
-                                                                            1] !=
+                                                                            1] ==
                                                                         '0'
                                                                     ? FlatButton(
                                                                         onPressed:
@@ -411,12 +361,9 @@ class _Achievement2State extends State<Achievement2> {
                                                                           setState(
                                                                               () {
                                                                             // Critical code
-                                                                            gb.coupon1 =
-                                                                                true;
-                                                                            print('Coupon 1 claimed');
-                                                                            gb.inventory.add(Coupon(
-                                                                                title: 'Coupon 1',
-                                                                                code: '1111'));
+                                                                            couponlist[1] =
+                                                                                '1';
+                                                                            claimCoupon(1);
                                                                           });
                                                                         },
                                                                         color: Color(
@@ -862,11 +809,15 @@ class _Achievement2State extends State<Achievement2> {
   }
 
   void claimCoupon(int i) {
-    couponlist[i] = 1;
+    couponlist[i] = '1';
     var couponString = couponlist.join(',');
     databaseReference
         .child('Users/' + currentUser.uid + '/' + 'coupons')
         .set(couponString);
+    achievements += 1;
+    databaseReference
+        .child('Users/' + currentUser.uid + '/' + 'achievements')
+        .set(achievements);
   }
 
   bool checkLvl(var level) {
@@ -890,8 +841,9 @@ class _Achievement2State extends State<Achievement2> {
     cafeHops = userData.value[userid]['CafesHopped'];
     userName = userData.value[userid]['name'];
     userTitle = userData.value[userid]['Title'];
+    achievements = userData.value[userid]['achievements'];
     playerlvl = (cafeHops / 3).floor() == 0 ? 1 : 1 + (cafeHops / 3).floor();
-    couponlist = userData.value[userid]['coupons'];
+    couponlist = userData.value[userid]['coupons'].split(',');
     //gb.hopCount = cafeHops;
     //gb.playerLevel = (cafeHops / 2).ceil();
     //gb.hopCount = 0;
