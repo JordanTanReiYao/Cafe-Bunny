@@ -6,8 +6,6 @@ import 'package:Cafe_Bunny/main.dart';
 import 'package:Cafe_Bunny/email_login.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../couponspage.dart';
-
 class SideMenu extends StatefulWidget {
   final String userName;
   final String email;
@@ -47,7 +45,7 @@ class NavDrawer extends State<SideMenu> {
                       ),
                       CircleAvatar(
                         backgroundImage:
-                          AssetImage('assets/cafe.png'),
+                            AssetImage("assets/sampleprofilepic.png"),
                         radius: 45.0,
                         // maxRadius: 200.0,
                       ),
@@ -80,11 +78,6 @@ class NavDrawer extends State<SideMenu> {
             onTap: () => {navigateToAchievementPage(context)},
           ),
           ListTile(
-            leading: Icon(Icons.attach_money_rounded),
-            title: Text('Coupons'),
-            onTap: () => {navigateToCouponsPage(context)},
-          ),
-          ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Logout'),
             onTap: () => {_signOut(context)},
@@ -98,11 +91,6 @@ class NavDrawer extends State<SideMenu> {
     print(2345);
     Navigator.push(
         context, MaterialPageRoute(builder: (_) => new UserProfile()));
-  }
-
-  Future navigateToCouponsPage(context) async{
-    Navigator.push(
-        context, MaterialPageRoute(builder: (_) => new CouponPage()));
   }
 
   Future navigateToAchievementPage(context) async {
