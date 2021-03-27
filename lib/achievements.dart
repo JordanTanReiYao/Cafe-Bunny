@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:Cafe_Bunny/globals.dart' as gb;
-import 'package:Cafe_Bunny/couponClass.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:Cafe_Bunny/globals.dart' as gb;
+import 'globals.dart';
+
 
 class Achievement2 extends StatefulWidget {
   //static String routeName = "/achievement2";
@@ -783,8 +784,7 @@ class _Achievement2State extends State<Achievement2> {
                                   translation: Offset(0.0, -0.5),
                                   child: Align(
                                     child: CircleAvatar(
-                                      backgroundImage: AssetImage(
-                                          "assets/sampleprofilepic.png"),
+                                      backgroundImage: avatar(gb.index),
                                       radius: 65.0,
                                       // maxRadius: 200.0,
                                     ),

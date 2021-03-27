@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:Cafe_Bunny/globals.dart' as gb;
+import 'globals.dart';
 
 //import 'package:google_maps_in_flutter/review.dart';
 
@@ -101,8 +103,7 @@ class User extends State<UserProfile> {
                                             child: Container(
                                               alignment: Alignment(0.0, 2.5),
                                               child: CircleAvatar(
-                                                backgroundImage: AssetImage(
-                                                    'assets/sampleprofilepic.png'),
+                                                backgroundImage: avatar(gb.index),
                                                 radius: 60.0,
                                               ),
                                             ),
@@ -219,10 +220,22 @@ class User extends State<UserProfile> {
                               bottom: 18,
                               child: RaisedButton(
                                   child: Text('Back to Home Page'),
+
                                   onPressed: () {
                                     Navigator.pop(context);
                                     Navigator.pop(context);
-                                  }))
+                                  })),
+                              Positioned(
+                                  top: 18,
+                                  child: RaisedButton(
+                                      child: Text('Change DP'),
+                                      onPressed: () {
+                                        setState(() {
+                                          if(gb.index == 10) {gb.index = 1;}
+                                          else {gb.index += 1;}
+                                          avatar(gb.index);
+                                        });
+                                      }))
                         ]));
                   } else {
                     return CircularProgressIndicator();
