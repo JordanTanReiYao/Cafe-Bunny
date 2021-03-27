@@ -3,6 +3,7 @@ import 'package:Cafe_Bunny/globals.dart' as gb;
 import 'package:Cafe_Bunny/couponClass.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:Cafe_Bunny/couponPage.dart';
 
 class Achievement2 extends StatefulWidget {
   //static String routeName = "/achievement2";
@@ -324,65 +325,82 @@ class _Achievement2State extends State<Achievement2> {
                                                         ),
                                                         Card(
                                                           child: ListTile(
-                                                            leading: Icon(
-                                                              Icons
-                                                                  .attach_money_rounded,
-                                                              size: 56.0,
-                                                              color: Color(
-                                                                  0xff232c51),
-                                                            ),
-                                                            title: Text(
-                                                                'Coupon 1'),
-                                                            subtitle: Text(
-                                                                'Reach Player Level 2'),
-                                                            onTap: () {
-                                                              print('Coupon 1');
-                                                            },
-                                                            enabled:
-                                                                checkLvl(2),
-                                                            trailing: !checkLvl(
-                                                                    2)
-                                                                ? Text(
-                                                                    '$playerlvl/2',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                          .grey,
-                                                                      fontSize:
-                                                                          20,
-                                                                    ),
-                                                                  )
-                                                                : couponlist[
-                                                                            1] ==
-                                                                        '0'
-                                                                    ? FlatButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          setState(
+                                                              leading: Icon(
+                                                                Icons
+                                                                    .attach_money_rounded,
+                                                                size: 56.0,
+                                                                color: Color(
+                                                                    0xff232c51),
+                                                              ),
+                                                              title: Text(
+                                                                  'Coupon 1'),
+                                                              subtitle: Text(
+                                                                  'Reach Player Level 2'),
+                                                              onTap: () {
+                                                                print(
+                                                                    'Coupon 1');
+                                                              },
+                                                              enabled:
+                                                                  checkLvl(2),
+                                                              trailing: !checkLvl(
+                                                                      2)
+                                                                  ? Text(
+                                                                      '$playerlvl/2',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .grey,
+                                                                        fontSize:
+                                                                            20,
+                                                                      ),
+                                                                    )
+                                                                  : couponlist[
+                                                                              1] ==
+                                                                          '0'
+                                                                      ? FlatButton(
+                                                                          onPressed:
                                                                               () {
-                                                                            // Critical code
-                                                                            couponlist[1] =
-                                                                                '1';
-                                                                            claimCoupon(1);
-                                                                          });
-                                                                        },
-                                                                        color: Color(
-                                                                            0xff232c51),
-                                                                        child:
-                                                                            Text(
-                                                                          'CLAIM',
-                                                                          style:
-                                                                              TextStyle(
-                                                                            color:
-                                                                                Colors.white,
-                                                                            fontWeight:
-                                                                                FontWeight.bold,
-                                                                            fontSize:
-                                                                                20,
+                                                                            setState(() {
+                                                                              // Critical code
+                                                                              couponlist[1] = '1';
+                                                                              claimCoupon(1);
+                                                                            });
+                                                                          },
+                                                                          color:
+                                                                              Color(0xff232c51),
+                                                                          child:
+                                                                              Text(
+                                                                            'CLAIM',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: 20,
+                                                                            ),
                                                                           ),
-                                                                        ),
-                                                                      )
-                                                                    : Text(
+                                                                        )
+                                                                      : FlatButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            setState(() {
+                                                                              // Critical code
+                                                                              navigateToCouponPage(context);
+                                                                            });
+                                                                          },
+                                                                          color:
+                                                                              Color(0xff232c51),
+                                                                          child:
+                                                                              Text(
+                                                                            'USE',
+                                                                            style:
+                                                                                TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontWeight: FontWeight.bold,
+                                                                              fontSize: 20,
+                                                                            ),
+                                                                          ),
+                                                                        )
+                                                              /*Text(
                                                                         'CLAIMED',
                                                                         style:
                                                                             TextStyle(
@@ -393,8 +411,8 @@ class _Achievement2State extends State<Achievement2> {
                                                                           fontSize:
                                                                               20,
                                                                         ),
-                                                                      ),
-                                                          ),
+                                                                      ),*/
+                                                              ),
                                                         ),
                                                         Card(
                                                           child: ListTile(
@@ -456,16 +474,29 @@ class _Achievement2State extends State<Achievement2> {
                                                                           ),
                                                                         ),
                                                                       )
-                                                                    : Text(
-                                                                        'CLAIMED',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Color(0xff232c51),
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                          fontSize:
-                                                                              20,
+                                                                    : FlatButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          setState(
+                                                                              () {
+                                                                            // Critical code
+                                                                            navigateToCouponPage(context);
+                                                                          });
+                                                                        },
+                                                                        color: Color(
+                                                                            0xff232c51),
+                                                                        child:
+                                                                            Text(
+                                                                          'USE',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            fontSize:
+                                                                                20,
+                                                                          ),
                                                                         ),
                                                                       ),
                                                           ),
@@ -605,16 +636,29 @@ class _Achievement2State extends State<Achievement2> {
                                                                           ),
                                                                         ),
                                                                       )
-                                                                    : Text(
-                                                                        'CLAIMED',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Color(0xff232c51),
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                          fontSize:
-                                                                              20,
+                                                                    : FlatButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          setState(
+                                                                              () {
+                                                                            // Critical code
+                                                                            navigateToCouponPage(context);
+                                                                          });
+                                                                        },
+                                                                        color: Color(
+                                                                            0xff232c51),
+                                                                        child:
+                                                                            Text(
+                                                                          'USE',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            fontSize:
+                                                                                20,
+                                                                          ),
                                                                         ),
                                                                       ),
                                                           ),
@@ -679,16 +723,29 @@ class _Achievement2State extends State<Achievement2> {
                                                                           ),
                                                                         ),
                                                                       )
-                                                                    : Text(
-                                                                        'CLAIMED',
-                                                                        style:
-                                                                            TextStyle(
-                                                                          color:
-                                                                              Color(0xff232c51),
-                                                                          fontWeight:
-                                                                              FontWeight.bold,
-                                                                          fontSize:
-                                                                              20,
+                                                                    : FlatButton(
+                                                                        onPressed:
+                                                                            () {
+                                                                          setState(
+                                                                              () {
+                                                                            // Critical code
+                                                                            navigateToCouponPage(context);
+                                                                          });
+                                                                        },
+                                                                        color: Color(
+                                                                            0xff232c51),
+                                                                        child:
+                                                                            Text(
+                                                                          'USE',
+                                                                          style:
+                                                                              TextStyle(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontWeight:
+                                                                                FontWeight.bold,
+                                                                            fontSize:
+                                                                                20,
+                                                                          ),
                                                                         ),
                                                                       ),
                                                           ),
@@ -885,6 +942,12 @@ class _Achievement2State extends State<Achievement2> {
       return true;
     else
       return false;
+  }
+
+  Future navigateToCouponPage(context) async {
+    print(2345);
+    Navigator.push(
+        context, MaterialPageRoute(builder: (_) => new CouponPage()));
   }
 
   getData() async {
